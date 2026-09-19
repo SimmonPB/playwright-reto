@@ -13,9 +13,11 @@ test('Get all the usernames registered', async ({ page }) => {
     await page.getByRole('navigation', { name: 'Topbar menu' }).getByText('User Management').click()
     await page.getByRole('menuitem', { name: 'Users' }).click()
 
-    const rows = page.getByRole('table').getByRole('row')
+    const table = page.getByRole('table').filter({ has: page.getByText('Employee Name') })
+    const rows = table.getByRole('row')
     const usernames: string[] = []
 
+    await rows.nth(1).waitFor()
     const rowCount = await rows.count()
 
     for (let i = 1; i < rowCount; i++) {
